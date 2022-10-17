@@ -25,18 +25,17 @@ class PDF2Text:
             outTXTfile = self.output + '\\' + inPDFfile[-1][:lenfilename] + '.txt'
             self.pdf2txt(PDFfile, outTXTfile)
 
-    def pdf2txt(self, inPDFfile, outTXTfile):
-        inFile = open(inPDFfile, 'rb')
-        resMgr = PDFResourceManager()
-        retData = StringIO()
-        txtConverter = TextConverter(resMgr, retData, laparams=LAParams())
-        interpreter = PDFPageInterpreter(resMgr, txtConverter)
-        for page in PDFPage.get_pages(inFile):
-            interpreter.process_page(page)
-        txt = retData.getvalue()
-        with open(outTXTfile, 'w', encoding='utf-8') as f:
-            f.write(txt)
-            print(txt)
+    def pdf2txt(inPDFfile, outTXTfile):
+        with open(inPDFfile, 'rb') as infile:
+            resMgr = PDFResourceManager()
+            retData = StringIO()
+            txtConverter = TextConverter(resMgr, retData, laparams=LAParams())
+            interpreter = PDFPageInterpreter(resMgr, txtConverter)
+            for page in PDFPage.get_pages(infile):
+                interpreter.process_page(page)
+            txt = retData.getvalue()
+            with open(outTXTfile, 'wt', encoding='utf-8') as f:
+                f.write(txt)
 
 oPDF2Text = PDF2Text()
 oPDF2Text.getTXT()
